@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    public static String email;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             p.setVisibility(ProgressBar.VISIBLE);
 
 //            Attempt log in
-            FirebaseUtils.attemptLogin(((EditText) findViewById(R.id.editText)).getText().toString(),((EditText) findViewById(R.id.editText2)).getText().toString(),mAuth,getApplicationContext(),this);
+            FirebaseUtils.attemptLogin(((EditText) findViewById(R.id.emailAddressText)).getText().toString(),((EditText) findViewById(R.id.passwordText)).getText().toString(),mAuth,getApplicationContext(),this);
 
             p.setVisibility(View.INVISIBLE);
         }
