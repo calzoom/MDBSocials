@@ -1,5 +1,6 @@
 package com.example.japjot.mdbsocials;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,7 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -18,57 +23,63 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private FirebaseAuth mAuth;
+    private static FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //set up onclick listeners for buttons
-        Button register = (Button) findViewById(R.id.createAccountButton);
-        register.setOnClickListener(this);
-
         mAuth = FirebaseAuth.getInstance();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
-                    Log.d("Register Status", "onAuthStateChanged:signed_in:" + user.getUid());
-                    MainActivity.email = user.getEmail();
-
-                    Intent intent = new Intent(getApplicationContext(),FeedActivity.class);
-                    startActivity(intent);
-
+                    Log.d("ye", "onAuthStateChanged:signed_in:" + user.getUid());
 
                 } else {
-                    // User is signed out
-                    Log.d("Register Status", "onAuthStateChanged:signed_out");
+                    Log.d("ye", "onAuthStateChanged:signed_out");
                 }
-
             }
         };
+
+        Button register = (Button) findViewById(R.id.createAccountButton);
+        register.setOnClickListener(this);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+    private void attemptSignup(String email, String password) {
+//        String email = ((EditText) findViewById(R.id.registerEmailText)).getText().toString();
+//        String password = ((EditText) findViewById(R.id.registerPasswordText)).getText().toString();
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("ye", "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("ye", "signInWithEmail:failed", task.getException());
+                            Toast.makeText(RegisterActivity.this, "sign up failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
     }
 
     public void onClick(View view) {
         if (view.getId() == R.id.createAccountButton) {
-            FirebaseUtils.attemptRegister(((EditText) findViewById(R.id.registerEmailText)).getText().toString(),((EditText) findViewById(R.id.registerPasswordText)).getText().toString(),mAuth,getApplicationContext(),this);
+            attemptSignup(((EditText) findViewById(R.id.registerEmailText)).getText().toString(), ((EditText) findViewById(R.id.registerPasswordText)).getText().toString());
         }
     }
 
