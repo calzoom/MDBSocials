@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Created by japjot on 2/21/18.
  */
 
-class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -27,7 +27,7 @@ class RegisterActivity extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_register);
 
         //set up onclick listeners for buttons
-        Button register = (Button) findViewById(R.id.button4);
+        Button register = (Button) findViewById(R.id.createAccountButton);
         register.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -40,12 +40,8 @@ class RegisterActivity extends AppCompatActivity implements View.OnClickListener
                     Log.d("Register Status", "onAuthStateChanged:signed_in:" + user.getUid());
                     MainActivity.email = user.getEmail();
 
-                    // GO TO FEED
-
-//                    Intent intent = new Intent(getApplicationContext(),FeedActivity.class);
-//                    startActivity(intent);
-
-
+                    Intent intent = new Intent(getApplicationContext(),FeedActivity.class);
+                    startActivity(intent);
 
 
                 } else {
@@ -71,7 +67,7 @@ class RegisterActivity extends AppCompatActivity implements View.OnClickListener
     }
 
     public void onClick(View view) {
-        if (view.getId() == R.id.button4) {
+        if (view.getId() == R.id.createAccountButton) {
             FirebaseUtils.attemptRegister(((EditText) findViewById(R.id.registerEmailText)).getText().toString(),((EditText) findViewById(R.id.registerPasswordText)).getText().toString(),mAuth,getApplicationContext(),this);
         }
     }
