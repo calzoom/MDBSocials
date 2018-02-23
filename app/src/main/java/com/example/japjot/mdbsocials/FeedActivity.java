@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,8 +22,8 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recycleboy;
 
     private Feedadapter feedAdapter;
-    private ArrayList<Eventsclass.Event> events;
-
+//    private ArrayList<Events.Event> events;
+    private ArrayList<Events> events;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -40,12 +38,12 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         recycleboy = (RecyclerView)findViewById(R.id.recyclerView);
         recycleboy.setHasFixedSize(true);
         recycleboy.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        Eventsclass eventsclass = new Eventsclass();
-        events = eventsclass.getEvent();
-        updateRecyclerView(events);
+        Events events = new Events();
+        this.events = events.getEvent();
+        updateRecyclerView(this.events);
     }
 
-    public void updateRecyclerView(ArrayList<Eventsclass.Event> p){
+    public void updateRecyclerView(ArrayList<Events.Event> p){
         recycleboy.setLayoutManager(new LinearLayoutManager(this));
         feedAdapter = new Feedadapter(getApplicationContext(), p);
         recycleboy.setAdapter(feedAdapter);

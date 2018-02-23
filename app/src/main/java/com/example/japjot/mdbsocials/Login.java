@@ -67,7 +67,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
-
     private void attemptLogin() {
         String email = ((EditText) findViewById(R.id.emailAddressText)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();

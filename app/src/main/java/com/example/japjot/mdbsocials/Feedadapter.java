@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by japjot on 2/22/18.
@@ -21,9 +20,9 @@ import java.util.List;
 public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHolder>{
 
     private Context context;
-    private ArrayList<Eventsclass.Event> events;
+    private ArrayList<Events.Event> events;
 
-    public Feedadapter(Context context, ArrayList<Eventsclass.Event> events) {
+    public Feedadapter(Context context, ArrayList<Events.Event> events) {
         this.context = context;
         this.events = events;
     }
@@ -35,17 +34,17 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
         return new CustomViewHolder(view);
     }
 
-    public void setList(ArrayList<Eventsclass.Event> list){
+    public void setList(ArrayList<Events.Event> list){
         this.events = list;
     }
 
-    public ArrayList<Eventsclass.Event> getEvents(){
+    public ArrayList<Events.Event> getEvents(){
         return events;
     }
 
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
-        Eventsclass.Event event = events.get(position);
+        Events.Event event = events.get(position);
 
         holder.eventNameTextView.setText(event.eventName);
 //        Glide.with(context).load(getURL(pokemon.number)).thumbnail(0.5f).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
@@ -79,7 +78,7 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Eventsclass.Event event = events.get(getAdapterPosition());
+                    Events.Event event = events.get(getAdapterPosition());
                     //Intent stuff for when you click on it
                 }
             });
