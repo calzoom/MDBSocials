@@ -1,6 +1,8 @@
 package com.example.japjot.mdbsocials;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +52,7 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
         Log.d("error:", event.eventName);
         holder.eventDate.setText(event.date);
 //        holder.eventImage.setImageResource(R.id.);
+        holder.constraintLayout.setOnClickListener(holder);
     }
 
     @Override
@@ -57,14 +60,16 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
         return events.size();
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder{
+    class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView eventNameTextView;
         TextView eventDate;
         TextView eventEmail;
         ImageView eventImage;
+        ConstraintLayout constraintLayout;
 
         public CustomViewHolder (View view){
             super(view);
+            this.constraintLayout = view.findViewById(R.id.clayout);
             this.eventNameTextView = (TextView) view.findViewById(R.id.nameTextView);
             this.eventDate = (TextView) view.findViewById(R.id.dateTextView);
             this.eventEmail = (TextView) view.findViewById(R.id.emailTextView);
@@ -81,6 +86,11 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
 
         }
 
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, DetailActivity.class);
+            context.startActivity(intent);
+        }
     }
 
 }

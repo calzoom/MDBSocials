@@ -25,6 +25,12 @@
         <activity android:name=".FeedActivity">
         </activity>
 
+        <activity android:name=".DetailActivity">
+        </activity>
+
+        <activity android:name=".NewSocial">
+        </activity>
+
     </application>
 
 </manifest>

@@ -25,7 +25,6 @@ public class Eventsclass {
         return events;
     }
 
-
     public class Event {
         String eventName, description, date, email, imageURL, numInterested, key;
 

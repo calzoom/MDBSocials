@@ -1,10 +1,14 @@
 package com.example.japjot.mdbsocials;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -12,7 +16,7 @@ import java.util.ArrayList;
  * Created by japjot on 2/22/18.
  */
 
-public class FeedActivity extends AppCompatActivity{
+public class FeedActivity extends AppCompatActivity implements View.OnClickListener{
 
     private RecyclerView recycleboy;
 
@@ -23,6 +27,9 @@ public class FeedActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+
+        Button createEventButton = (Button) findViewById(R.id.createEventButton);
+        createEventButton.setOnClickListener(this);
 
         recycleboy = (RecyclerView)findViewById(R.id.recyclerView);
         recycleboy.setHasFixedSize(true);
@@ -38,4 +45,12 @@ public class FeedActivity extends AppCompatActivity{
         recycleboy.setAdapter(feedAdapter);
     }
 
+    @Override
+    public void onClick(View v) {
+        if(v == findViewById(R.id.createEventButton)){
+            // create event page
+            Intent intent = new Intent(getApplicationContext(), NewSocial.class);
+            startActivity(intent);
+        }
+    }
 }

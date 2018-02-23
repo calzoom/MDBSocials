@@ -36,7 +36,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d("ye", "onAuthStateChanged:signed_in:" + user.getUid());
-
+                    Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+                    startActivity(intent);
                 } else {
                     Log.d("ye", "onAuthStateChanged:signed_out");
                 }
