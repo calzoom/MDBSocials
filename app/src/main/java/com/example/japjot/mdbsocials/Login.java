@@ -54,6 +54,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         logInImage.setImageResource(R.drawable.loglogo);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
 
     private void attemptLogin() {
         String email = ((EditText) findViewById(R.id.emailAddressText)).getText().toString();

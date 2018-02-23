@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -31,6 +34,9 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         Button createEventButton = (Button) findViewById(R.id.createEventButton);
         createEventButton.setOnClickListener(this);
 
+        Button logOut = (Button) findViewById(R.id.button2);
+        logOut.setOnClickListener(this);
+
         recycleboy = (RecyclerView)findViewById(R.id.recyclerView);
         recycleboy.setHasFixedSize(true);
         recycleboy.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -50,6 +56,12 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         if(v == findViewById(R.id.createEventButton)){
             // create event page
             Intent intent = new Intent(getApplicationContext(), NewSocial.class);
+            startActivity(intent);
+        }
+        else if(v == findViewById(R.id.button2)){
+            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
         }
     }
