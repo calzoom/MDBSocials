@@ -49,7 +49,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         feedAdapter = new Feedadapter(getApplicationContext(), events);
         recycleboy.setAdapter(feedAdapter);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.orderByChild("date").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 events.clear();
