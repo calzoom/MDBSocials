@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
@@ -40,11 +43,17 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
     public void onBindViewHolder(CustomViewHolder holder, int position) {
         Event event = events.get(position);
 
-        holder.eventNameTextView.setText(event.eventName);
         holder.eventEmail.setText(event.getEmail());
         Log.d("error:", event.eventName);
-        holder.eventDate.setText(event.date);
+
         holder.constraintLayout.setOnClickListener(holder);
+        holder.eventNameTextView.setText(event.eventName);
+        holder.eventDate.setText(event.date);
+        holder.eventEmail.setText(event.email);
+        holder.numInterested.setText(Integer.toString(event.numInterested));
+
+        Glide.with(context).load(event.getImageURL()).into(holder.eventImage);
+
     }
 
     @Override
@@ -56,7 +65,7 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
         TextView eventNameTextView;
         TextView eventDate;
         TextView eventEmail;
-        TextView rsvp;
+        TextView numInterested;
 
         ImageView eventImage;
 
@@ -65,18 +74,19 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
         public CustomViewHolder (View view){
             super(view);
             this.constraintLayout = view.findViewById(R.id.clayout);
-            this.eventNameTextView = (TextView) view.findViewById(R.id.nameTextView);
-            this.eventDate = (TextView) view.findViewById(R.id.dateTextView);
-            this.eventEmail = (TextView) view.findViewById(R.id.emailTextView);
-            this.rsvp = (TextView) view.findViewById(R.id.textView11);
+            this.eventNameTextView = view.findViewById(R.id.nameTextView);
+            this.eventDate = view.findViewById(R.id.dateTextView);
+            this.eventEmail = view.findViewById(R.id.emailTextView);
+            this.numInterested = view.findViewById(R.id.textView11);
 
-            this.eventImage = (ImageView) view.findViewById(R.id.eventImage);
+            this.eventImage = view.findViewById(R.id.eventImage);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Event event = events.get(getAdapterPosition());
                     //Intent stuff for when you click on it
+                    Toast.makeText(context, "I DONT KNOW WHAT THAT MEANS", Toast.LENGTH_SHORT).show();
                 }
             });
 

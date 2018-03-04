@@ -10,8 +10,9 @@ import java.util.List;
 
 public class Event implements Serializable{
 
-        String eventName, description, date, email, imageURL, numInterested;
-        int rsvp;
+    String eventName, description, date, email, imageURL;
+
+    int numInterested;
 
     public String getEventName() {
         return eventName;
@@ -33,20 +34,19 @@ public class Event implements Serializable{
         return imageURL;
     }
 
-    public String getNumInterested() {
+    public int getNumInterested() {
         return numInterested;
     }
 
-    public int getrsvp(){return rsvp;}
-
-    public Event(String eventName, String description, String date, String email, String imageURL, String numInterested, int rsvp) {
+    public Event(String eventName, String description, String date, String email, String imageURL, int numInterested, int rsvp) {
         this.eventName = eventName;
         this.description = description;
         this.date = date;
         this.email = email;
         this.imageURL = imageURL;
         this.numInterested = numInterested;
-        this.rsvp = rsvp;
     }
+
+    public Event(){}
 
 }

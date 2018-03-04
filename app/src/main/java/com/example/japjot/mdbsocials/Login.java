@@ -36,21 +36,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d("ye", "onAuthStateChanged:signed_in:" + user.getUid());
-//                    Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
-//                    startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+                    startActivity(intent);
                 } else {
                     Log.d("ye", "onAuthStateChanged:signed_out");
                 }
             }
         };
 
-        Button signInButton = (Button) findViewById(R.id.signInB);
+        Button signInButton = findViewById(R.id.signInB);
         signInButton.setOnClickListener(this);
 
-        Button signUpButton = (Button) findViewById(R.id.signUpB);
+        Button signUpButton = findViewById(R.id.signUpB);
         signUpButton.setOnClickListener(this);
 
-        ImageView logInImage = (ImageView) findViewById(R.id.logInImage);
+        ImageView logInImage = findViewById(R.id.logInImage);
         logInImage.setImageResource(R.drawable.loglogo);
     }
 
@@ -58,13 +58,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+
     }
 
     private void attemptLogin() {
