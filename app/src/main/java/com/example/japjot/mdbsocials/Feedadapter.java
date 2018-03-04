@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -20,37 +22,28 @@ import java.util.ArrayList;
 public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHolder>{
 
     private Context context;
-    private ArrayList<Events.Event> events;
+    private ArrayList<Event> events;
 
-    public Feedadapter(Context context, ArrayList<Events.Event> events) {
+    public Feedadapter(Context context, ArrayList<Event> events) {
         this.context = context;
         this.events = events;
     }
 
     @Override
-    public CustomViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
+    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview, parent, false);
         return new CustomViewHolder(view);
     }
 
-    public void setList(ArrayList<Events.Event> list){
-        this.events = list;
-    }
-
-    public ArrayList<Events.Event> getEvents(){
-        return events;
-    }
-
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
-        Events.Event event = events.get(position);
+        Event event = events.get(position);
 
         holder.eventNameTextView.setText(event.eventName);
-//        Glide.with(context).load(getURL(pokemon.number)).thumbnail(0.5f).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        holder.eventEmail.setText(event.getEmail());
         Log.d("error:", event.eventName);
         holder.eventDate.setText(event.date);
-//        holder.eventImage.setImageResource(R.id.);
         holder.constraintLayout.setOnClickListener(holder);
     }
 
@@ -63,7 +56,10 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
         TextView eventNameTextView;
         TextView eventDate;
         TextView eventEmail;
+        TextView rsvp;
+
         ImageView eventImage;
+
         ConstraintLayout constraintLayout;
 
         public CustomViewHolder (View view){
@@ -72,13 +68,14 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
             this.eventNameTextView = (TextView) view.findViewById(R.id.nameTextView);
             this.eventDate = (TextView) view.findViewById(R.id.dateTextView);
             this.eventEmail = (TextView) view.findViewById(R.id.emailTextView);
-//            this.eventIma
-//            this.imageView = (ImageView) view.findViewById(R.id.ImageView);
+            this.rsvp = (TextView) view.findViewById(R.id.textView11);
+
+            this.eventImage = (ImageView) view.findViewById(R.id.eventImage);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Events.Event event = events.get(getAdapterPosition());
+                    Event event = events.get(getAdapterPosition());
                     //Intent stuff for when you click on it
                 }
             });
