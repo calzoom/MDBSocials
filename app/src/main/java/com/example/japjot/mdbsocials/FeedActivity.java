@@ -52,15 +52,11 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 events.clear();
-
                 for(DataSnapshot child : dataSnapshot.getChildren()){
                     events.add(child.getValue(Event.class));
                 }
-
                 feedAdapter.notifyDataSetChanged();
-
             }
 
             @Override

@@ -24,24 +24,23 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Date;
+
 /**
  * Created by japjot on 2/22/18.
  */
 
-public class NewSocial extends AppCompatActivity{
-
-    private static final int PICTURE_UPLOAD = 1;
-    EditText new_name, new_description, new_date;
-    Button create_button, back_button;
-    ImageView new_image;
+public class NewSocial extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference("/socials");
+    DatabaseReference ref = database.getReference("/events");
     private StorageReference storageRef;
 
-    private static FirebaseAuth mAuth;
-    private static FirebaseUser mUser;
+    EditText new_name, new_description, new_date;
+    ImageView new_image;
+    Button create_button;
 
+    private static final int PICTURE_UPLOAD = 1;
     Uri selectedImageUri;
 
     @Override
@@ -51,44 +50,45 @@ public class NewSocial extends AppCompatActivity{
 
         new_name = findViewById(R.id.editText4);
         new_description = findViewById(R.id.editText5);
-        new_date = findViewById(R.id.editText2);
         new_image = findViewById(R.id.imageView);
+        new_date = findViewById(R.id.editText);
         create_button = findViewById(R.id.button4);
-//        back_button = findViewById(R.id.back_button);
-        View.OnFocusChangeListener keyboardHider = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        };
 
-        create_button.setOnClickListener(new View.OnClickListener() {
+        create_button.setOnClickListener(this);
+        new_image.setOnClickListener(this);
+
+    }
+
+    public void submit() {
+        ref = FirebaseDatabase.getInstance().getReference();
+
+        final String key = ref.child("events").push().getKey();
+        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://mdbsocials-37345.appspot.com");
+        StorageReference socialsRef = storageRef.child(key + ".png");
+
+        if (selectedImageUri == null) {
+            Log.d("SUBMIT", "image null");
+        }
+        socialsRef.putFile(selectedImageUri).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onClick(View v) {
-                submit();
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(NewSocial.this, "Cannot upload file into storage.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                String name = new_name.getText().toString();
+                String description = new_description.getText().toString();
+                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                String date = new_date.getText().toString();
+//                Long timestamp = (new Date()).getTime();
+                String imageURL = taskSnapshot.getDownloadUrl().toString();
+
+                Event event = new Event(name, description, date, email, imageURL, 1);
+                ref.child("events").child(key).setValue(event);
+                startActivity(new Intent(NewSocial.this, Login.class));
             }
         });
-
-        new_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICTURE_UPLOAD);
-            }
-        });
-
-//        back_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(AddSocialActivity.this, MainActivity.class));
-//            }
-//        });
-        new_name.setOnFocusChangeListener(keyboardHider);
-        new_date.setOnFocusChangeListener(keyboardHider);
-        new_description.setOnFocusChangeListener(keyboardHider);
     }
 
     @Override
@@ -109,40 +109,18 @@ public class NewSocial extends AppCompatActivity{
         }
     }
 
-    public void submit() {
-        ref = FirebaseDatabase.getInstance().getReference();
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button4:
+                submit();
+                break;
 
-        final String key = ref.child("socials").push().getKey();
-        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://mdbsocials-37345.appspot.com");
-        StorageReference socialsRef = storageRef.child(key + ".png");
-
-        if (selectedImageUri == null) {
-            Log.d("SUBMIT", "image null");
+            case R.id.imageView:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICTURE_UPLOAD);
+                break;
         }
-        socialsRef.putFile(selectedImageUri).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(NewSocial.this, "Cannot upload file into storage.", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                String name = new_name.getText().toString();
-                String date = new_date.getText().toString();
-                String description = new_description.getText().toString();
-                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-//                Long timestamp = (new Date()).getTime();
-                String imageURL = taskSnapshot.getDownloadUrl().toString();
-
-                Event social = new Event(name, description, date, email, imageURL,"five");
-                ref.child("socials").child(key).setValue(social);
-                startActivity(new Intent(NewSocial.this, Login.class));
-            }
-        });
-    }
-
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

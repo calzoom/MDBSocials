@@ -16,7 +16,9 @@ import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by japjot on 2/22/18.
@@ -48,7 +50,8 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
 
         holder.constraintLayout.setOnClickListener(holder);
         holder.eventNameTextView.setText(event.eventName);
-        holder.eventDate.setText(event.date);
+//        String dateString = new SimpleDateFormat("hh/mm " + "z").format(new Date(event.date));
+        holder.eventDate.setText(event.getDate());
         holder.eventEmail.setText(event.email);
         holder.numInterested.setText(Integer.toString(event.numInterested));
 
@@ -81,20 +84,12 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
 
             this.eventImage = view.findViewById(R.id.eventImage);
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Event event = events.get(getAdapterPosition());
-                    //Intent stuff for when you click on it
-                    Toast.makeText(context, "I DONT KNOW WHAT THAT MEANS", Toast.LENGTH_SHORT).show();
-                }
-            });
-
         }
 
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra("Event", events.get(getAdapterPosition()));
             context.startActivity(intent);
         }
     }
