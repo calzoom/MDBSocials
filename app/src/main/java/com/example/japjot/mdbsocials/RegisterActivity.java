@@ -69,8 +69,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
-                            startActivity(intent);
+//                            Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+//                            startActivity(intent);
                         }
                     }
                 });

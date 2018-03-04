@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -24,7 +27,10 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recycleboy;
 
     private Feedadapter feedAdapter;
-    private ArrayList<Eventsclass.Event> events;
+    private ArrayList<Event> events;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("events");
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -38,17 +44,31 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         logOut.setOnClickListener(this);
 
         recycleboy = (RecyclerView)findViewById(R.id.recyclerView);
-        recycleboy.setHasFixedSize(true);
         recycleboy.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        Eventsclass eventsclass = new Eventsclass();
-        events = eventsclass.getEvent();
-        updateRecyclerView(events);
-    }
-
-    public void updateRecyclerView(ArrayList<Eventsclass.Event> p){
-        recycleboy.setLayoutManager(new LinearLayoutManager(this));
-        feedAdapter = new Feedadapter(getApplicationContext(), p);
+        events = new ArrayList<>();
+        feedAdapter = new Feedadapter(getApplicationContext(), events);
         recycleboy.setAdapter(feedAdapter);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                events.clear();
+
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    events.add(child.getValue(Event.class));
+                }
+
+                feedAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
