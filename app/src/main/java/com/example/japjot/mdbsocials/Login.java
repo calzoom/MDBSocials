@@ -21,7 +21,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     public static String email;
 
-    private static FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
