@@ -37,6 +37,10 @@ public class Event implements Serializable{
         return numInterested;
     }
 
+    public void incNumInterested(int i){
+        numInterested = numInterested + i;
+    }
+
     public Event(String eventName, String description, String date, String email, String imageURL, int numInterested) {
         this.eventName = eventName;
         this.description = description;

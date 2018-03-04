@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +34,7 @@ public class DetailActivity extends AppCompatActivity{
     boolean rsvpd = false;
     private static FirebaseAuth mAuth;
 
-    final Event event = (Event) getIntent().getSerializableExtra("Event");
+//    event.id = getIntent().getStringExtra("events id");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +48,13 @@ public class DetailActivity extends AppCompatActivity{
         interested = findViewById(R.id.button3);
         mAuth = FirebaseAuth.getInstance();
 
+        final Event event = (Event) getIntent().getSerializableExtra("Event");
+
         interested.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                transaction();
+                event.incNumInterested(1);
+//                transaction();
             }
         });
 
@@ -59,36 +62,36 @@ public class DetailActivity extends AppCompatActivity{
 
     }
 
-    public void transaction() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        String id = Login.mAuth.getCurrentUser().getUid();
-        final DatabaseReference newRef = ref.child("users").child(id).child("interestedList");
-        final String socialid = event.id;
-        newRef.child(event.id).setValue(event.id);
-        ref.child("socials").child(event.id).runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Message social = mutableData.getValue(Message.class);
-                if (rsvpd) {
-                    event.numInterested = event.numInterested - 1;
-                    newRef.child(socialid).setValue(null);
-                    rsvpd = false;
-                } else {
-                    event.numInterested = event.numInterested + 1;
-                    newRef.child(socialid).setValue(socialid);
-                    rsvpd = true;
-                }
-                mutableData.setValue(social);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                Log.d("bug", "postTransaction:onComplete:" + databaseError);
-            }
-        });
-    }
+//    public void transaction() {
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//        String id = Login.mAuth.getCurrentUser().getUid();
+//        final DatabaseReference newRef = ref.child("users").child(id).child("interestedList");
+////        final String socialid = social.id;
+////        newRef.child(social.id).setValue(social.id);
+////        ref.child("socials").child(social.id).runTransaction(new Transaction.Handler() {
+//            @Override
+//            public Transaction.Result doTransaction(MutableData mutableData) {
+//                Message social = mutableData.getValue(Message.class);
+//                if (rsvpd) {
+//                    event.numInterested = event.numInterested - 1;
+//                    newRef.child(socialid).setValue(null);
+//                    rsvpd = false;
+//                } else {
+//                    event.numInterested = event.numInterested + 1;
+//                    newRef.child(socialid).setValue(socialid);
+//                    rsvpd = true;
+//                }
+//                mutableData.setValue(social);
+//                return Transaction.success(mutableData);
+//            }
+//
+//            @Override
+//            public void onComplete(DatabaseError databaseError, boolean b,
+//                                   DataSnapshot dataSnapshot) {
+//                Log.d("bug", "postTransaction:onComplete:" + databaseError);
+//            }
+//        });
+//    }
 
     public void setInfo(Event ev){
         this.name.setText(ev.getEventName());
