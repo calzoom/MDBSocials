@@ -22,28 +22,27 @@ import java.util.ArrayList;
  * Created by japjot on 2/22/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class FeedActivity extends AppCompatActivity implements View.OnClickListener{
-
-    private RecyclerView recycleboy;
 
     private Feedadapter feedAdapter;
     private ArrayList<Event> events;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("events");
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final DatabaseReference myRef = database.getReference("events");
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        Button createEventButton = (Button) findViewById(R.id.createEventButton);
+        Button createEventButton = findViewById(R.id.createEventButton);
         createEventButton.setOnClickListener(this);
 
-        Button logOut = (Button) findViewById(R.id.button2);
+        Button logOut = findViewById(R.id.button2);
         logOut.setOnClickListener(this);
 
-        recycleboy = (RecyclerView)findViewById(R.id.recyclerView);
+        RecyclerView recycleboy = findViewById(R.id.recyclerView);
         recycleboy.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         events = new ArrayList<>();
         feedAdapter = new Feedadapter(getApplicationContext(), events);

@@ -10,24 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by japjot on 2/22/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHolder>{
 
-    private Context context;
-    private ArrayList<Event> events;
+    private final Context context;
+    private final ArrayList<Event> events;
 
     public Feedadapter(Context context, ArrayList<Event> events) {
         this.context = context;
@@ -65,14 +61,14 @@ public class Feedadapter extends RecyclerView.Adapter<Feedadapter.CustomViewHold
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView eventNameTextView;
-        TextView eventDate;
-        TextView eventEmail;
-        TextView numInterested;
+        final TextView eventNameTextView;
+        final TextView eventDate;
+        final TextView eventEmail;
+        final TextView numInterested;
 
-        ImageView eventImage;
+        final ImageView eventImage;
 
-        ConstraintLayout constraintLayout;
+        final ConstraintLayout constraintLayout;
 
         public CustomViewHolder (View view){
             super(view);

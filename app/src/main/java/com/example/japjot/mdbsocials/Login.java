@@ -19,10 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
 
-    public static String email;
-
-    public static FirebaseAuth mAuth;
-    public FirebaseAuth.AuthStateListener mAuthListener;
+    private static FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

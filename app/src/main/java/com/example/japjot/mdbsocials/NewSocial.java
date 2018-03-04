@@ -1,6 +1,5 @@
 package com.example.japjot.mdbsocials;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,31 +15,29 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.Date;
-
 /**
  * Created by japjot on 2/22/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class NewSocial extends AppCompatActivity implements View.OnClickListener {
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference("/events");
-    private StorageReference storageRef;
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference ref = database.getReference("/events");
 
-    EditText new_name, new_description, new_date;
-    ImageView new_image;
-    Button create_button;
+    private EditText new_name;
+    private EditText new_description;
+    private EditText new_date;
+    private ImageView new_image;
 
     private static final int PICTURE_UPLOAD = 1;
-    Uri selectedImageUri;
+    private Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +48,18 @@ public class NewSocial extends AppCompatActivity implements View.OnClickListener
         new_description = findViewById(R.id.editText5);
         new_image = findViewById(R.id.imageView);
         new_date = findViewById(R.id.editText);
-        create_button = findViewById(R.id.button4);
+        Button create_button = findViewById(R.id.button4);
 
         create_button.setOnClickListener(this);
         new_image.setOnClickListener(this);
 
     }
 
-    public void submit() {
+    private void submit() {
         ref = FirebaseDatabase.getInstance().getReference();
 
         final String key = ref.child("events").push().getKey();
-        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://mdbsocials-37345.appspot.com");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://mdbsocials-37345.appspot.com");
         StorageReference socialsRef = storageRef.child(key + ".png");
 
         if (selectedImageUri == null) {
@@ -84,7 +80,7 @@ public class NewSocial extends AppCompatActivity implements View.OnClickListener
 //                Long timestamp = (new Date()).getTime();
                 String imageURL = taskSnapshot.getDownloadUrl().toString();
 
-                Event event = new Event(name, description, date, email, imageURL, 1);
+                Event event = new Event(name, description, date, email, imageURL);
                 ref.child("events").child(key).setValue(event);
                 startActivity(new Intent(NewSocial.this, Login.class));
             }

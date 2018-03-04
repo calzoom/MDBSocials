@@ -1,6 +1,5 @@
 package com.example.japjot.mdbsocials;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +19,10 @@ import com.google.firebase.auth.FirebaseUser;
  * Created by japjot on 2/21/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         mAuth = FirebaseAuth.getInstance();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -46,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         };
 
-        Button register = (Button) findViewById(R.id.createAccountButton);
+        Button register = findViewById(R.id.createAccountButton);
         register.setOnClickListener(this);
     }
 
